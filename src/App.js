@@ -1,19 +1,36 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import "./index.css";
-import { EditOutlined,PlusCircleOutlined  } from "@ant-design/icons";
+import {
+  EditOutlined,
+  PlusCircleOutlined,
+  DeleteOutlined,
+  ScheduleOutlined,
+  FilterOutlined,
+} from "@ant-design/icons";
 import "./styles/tailwind.generated.css";
 import "antd/dist/antd.css";
-import { Table, Tag, Space, Radio, Input, Button } from "antd";
+import {
+  Table,
+  Tag,
+  Space,
+  Radio,
+  Input,
+  Button,
+  Row,
+  Col,
+  Checkbox,
+  Popover,
+} from "antd";
+
 const { Search } = Input;
-const columns = [
+const columnsInit = [
   {
     title: "Consignment Location",
     dataIndex: "cl",
     key: "cl",
     render: (text) => <a>{text}</a>,
     sorter: (a, b) => a.cl - b.cl,
-    
   },
   {
     title: "Ship To",
@@ -124,7 +141,9 @@ const columns = [
     render: (text, record) => (
       <Space size="middle">
         <EditOutlined />
-        <a>Delete</a>
+        <a className="text-red-700">
+          <DeleteOutlined />
+        </a>
       </Space>
     ),
   },
@@ -247,20 +266,88 @@ const rowSelection = {
     name: record.name,
   }),
 };
+
+const options = [
+  { label: "Consignment Location", value: "cl" },
+  { label: "Ship To", value: "st" },
+  { label: "Contact Name", value: "cn" },
+  { label: "Contact Email", value: "ce" },
+  { label: "Count Month", value: "cm" },
+  { label: "Risk Assessment", value: "ra" },
+  { label: "Count", value: "co" },
+];
+
+for (let i = 0; i < 400; i++) {
+  data.push({
+    key: `${i + 11}`,
+    cl: "Finding Nemo",
+    st: "42 Wallaby Way Syndney, Australia 2001",
+    cn: "Sherman, Philp",
+    ce: "ed@email.com",
+    cm: "August",
+    ra: ["Approved-Low"],
+    co: ["Scheduled"],
+  });
+}
+
 function App() {
   const [selectionType, setSelectionType] = useState("checkbox");
+  const [columns, seColumns] = useState([]);
+  const [selectedItem, setSelectedItem] = useState([]);
   const onSearch = (value) => console.log(value);
+
+  useEffect(() => {
+    const filtered = columnsInit.filter((col) => !selectedItem.includes(col.dataIndex));
+    seColumns(filtered)
+  }, [selectedItem]);
+
+  const onChange = (selection) => {
+    setSelectedItem(selection);
+  };
   return (
-    <div className="px-20 py-5">
+    <div className="px-20 py-5 ">
       <div className="grid grid-cols-6 gap-4">
         <div className="col-start-1 col-span-2">
-          <Search
-            placeholder="search..."
-            onSearch={onSearch}
-          />
+          <Search placeholder="search..." onSearch={onSearch} />
         </div>
-        <div className="col-start-6 col-span-6">
-          <Button type="link" icon={<PlusCircleOutlined />}>Add New Location</Button>
+        <div className="col-start-5 col-span-6 ">
+          <div className="flex gap-5">
+            <Button type="link" icon={<PlusCircleOutlined />}>
+              Add New Location
+            </Button>
+            <Button type="primary" icon={<ScheduleOutlined />}>
+              Create Count
+            </Button>
+            <Input.Group>
+              {" "}
+              <Popover
+                content={
+                  <Checkbox.Group
+                    onChange={onChange}
+                    style={{ width: "550px" }}
+                  >
+                    <Row>
+                      {options.map((group, i) => {
+                        return (
+                          <Col span={8}>
+                            <Checkbox key={i} value={group.value}>
+                              {group.label}
+                            </Checkbox>
+                          </Col>
+                        );
+                      })}
+                    </Row>
+                  </Checkbox.Group>
+                }
+                trigger="click"
+                placement="bottomLeft"
+              >
+                <Button>
+                  Hide Column <FilterOutlined type="filter" />
+                </Button>
+              </Popover>
+            </Input.Group>
+          </div>
         </div>
       </div>
 
@@ -275,12 +362,8 @@ function App() {
           rowSelection={{ type: selectionType, ...rowSelection }}
           columns={columns}
           dataSource={data}
-          // pagination={{position:[bottomCenter]}}
-          scroll={{ x: 1900, y: 800 }}
+          scroll={{ x: 1900, y: 680 }}
         />
-      </div>
-      <div className="text-right">
-        <Button type="primary">Create Count</Button>
       </div>
     </div>
   );
