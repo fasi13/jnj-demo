@@ -214,38 +214,17 @@ function CountDetails({history}) {
             id="inline-full-name"
             type="text"
             value="08/20/2021"
+            placeholder = "Expected Start Date"
           />
         </div>
-        <div className="p-1">
-          <input
-            className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-400 leading-tight focus:outline-none focus:bg-white focus:border-blue-500"
-            id="inline-full-name"
-            type="text"
-            value="Johnson & Johnson"
-          />
-        </div>
-        <div className="p-1">
-          <input
-            className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-400 leading-tight focus:outline-none focus:bg-white focus:border-blue-500"
-            id="inline-full-name"
-            type="text"
-            value="Franchise A, Franchise B"
-          />
-        </div>
-        <div className="p-1">
-          <input
-            className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-400 leading-tight focus:outline-none focus:bg-white focus:border-blue-500"
-            id="inline-full-name"
-            type="text"
-            value="Maria, Francisco"
-          />
-        </div>
+       
         <div className="p-1">
           <input
             className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-400 leading-tight focus:outline-none focus:bg-white focus:border-blue-500"
             id="inline-full-name"
             type="text"
             value="Smith, Jane"
+            placeholder = "Assigned Auditor"
           />
         </div>
         <div className="p-1">
@@ -254,6 +233,7 @@ function CountDetails({history}) {
             id="inline-full-name"
             type="text"
             value="Doe,John"
+            placeholder = "Approver"
           />
         </div>
         </div>
